@@ -1,0 +1,37 @@
+{
+  "variables": {
+    "build_name": "mysql",
+    "aws_access_key": "YOUR_AWS_ACCESS_KEY",
+    "aws_secret_key": "YOUR_AWS_SECRET_KEY",
+    "aws_region": "us-east-1",
+    "aws_instance_type": "t2.micro"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": ["./provisioners/mysql.sh"],
+      "pause_before": "4s"
+    }
+  ],
+  "builders": [
+    {
+      "name": "aws",
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "region": "{{user `aws_region`}}",
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "ubuntu/images/*ubuntu-xenial-16.04-amd64-server-*",
+          "root-device-type": "ebs"
+        },
+        "owners": ["099720109477"],
+        "most_recent": true
+      },
+      "instance_type": "{{user `aws_instance_type`}}",
+      "ssh_username": "ubuntu",
+      "ami_name": "{{user `build_name`}}-{{timestamp}}"
+    }
+  ]
+}
