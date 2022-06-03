@@ -8,9 +8,8 @@ packer {
 }
 
 
+
 source "amazon-ebs" "aws-ubuntu" {
-  access_key    = "AKIASZ7DOJYZAHMHPIUY"
-  secret_key    = "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"
   ami_name      = "packer-demo-ngnix-file"
   instance_type = "t2.micro"
   region        = "us-west-2"
