@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('clone the packer-repo') {
+            steps {
+            sh "rm -rf packer-demo"
+            sh "git clone https://github.com/altair08/packer-demo.git"
+            }
+        }
+        
+    stage('build ami') {
+           steps {
+               dir('packer-demo/Demo-ansilble/'){  
+                sh 'ls'
+                sh 'packer init .'
+                sh 'packer fmt .'
+                sh 'packer validate .'
+                
+        withCredentials([aws(accesKeyVariable:'AWS_ACESS_KEY_ID',credentialsId: 'thinesh-cre',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                sh 'packer build aws-ubuntu.pkr.hcl'
+}
+               }
+        }
+    }
+    stage('terraform') {
+            steps {
+            dir('packer-demo/Teraform-aws'){  
+                sh 'ls'
+                sh 'terraform init'
+                sh 'terraform fmt'
+                
+        withCredentials([aws(accesKeyVariable:'AWS_ACESS_KEY_ID',credentialsId: 'thinesh-cre',secretKeyVariable:'AWS_SECRET_ACCESS_KEY')]) {
+                sh 'terraform apply --auto-approve'
+}
+                
+                
+            }
+            }
+        }
+    
+}
+}
