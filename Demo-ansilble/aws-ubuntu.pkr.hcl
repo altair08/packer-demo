@@ -7,9 +7,13 @@ packer {
   }
 }
 
+locals {
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+}
+
 
 source "amazon-ebs" "aws-ubuntu" {
-  ami_name      = "packer-demo-ngnix-ansible"
+  ami_name      = "packer-demo-ngnix-ansible-${timestamp}"
   instance_type = "t2.micro"
   region        = "us-west-2"
   source_ami    = "ami-0ee8244746ec5d6d4"
