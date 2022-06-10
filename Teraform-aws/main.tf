@@ -17,6 +17,7 @@ provider "aws" {
 resource "aws_instance" "my_first_instance" {
     ami           = "${data.aws_ami.latest-ubuntu.id}"
     instance_type = "t2.micro"
+    key_name = "thinesh-pers-keypair"
 
      tags = {
     Name = "ExampleAppServerInstance"
@@ -27,5 +28,6 @@ data "aws_ami" "latest-ubuntu" {
 most_recent = true
 owners = ["193213648434"] 
 }
+
 
 
