@@ -19,7 +19,7 @@ source "amazon-ebs" "aws-ubuntu" {
   source_ami    = "ami-0ee8244746ec5d6d4"
   ssh_username  = "ubuntu"
     tags = {
-    Name = "PACKER-DEMO"
+    Name = "Demo-Ami"
   }
 
 
